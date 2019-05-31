@@ -10,7 +10,7 @@ import java.io.FileNotFoundException
 import javax.imageio.ImageIO
 
 class ImageReader(private val imagesToProcessDirectory: File) {
-    private val availableExtensions = listOf("png")
+    private val availableExtensions = listOf("png", "jpg", "JPG", "jpeg")
 
     fun read(path: String): Try<BufferedImage> {
         if (!hasCorrectExtension(path)) {
