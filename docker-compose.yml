@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  extract_features:
+    restart: always
+    container_name: extract_features
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+
+    tty: true
