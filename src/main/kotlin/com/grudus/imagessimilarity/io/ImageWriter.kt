@@ -8,10 +8,10 @@ import javax.imageio.ImageIO
 
 class ImageWriter(private val processedImagesDirectory: File) {
 
-    fun write(image: BufferedImage, filename: String): Try<BufferedImage> {
+    fun write(image: BufferedImage, filename: String): Try<File> {
         val file = File(processedImagesDirectory, filename)
 
         return Try.of { ImageIO.write(image, fileExtension(filename), file) }
-            .map { image }
+            .map { file }
     }
 }
