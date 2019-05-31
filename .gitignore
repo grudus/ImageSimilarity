@@ -9,3 +9,4 @@ src/main/resources/processed-images/*.sift
 src/main/resources/processed-images/*.sift.png
 
 **/*.DS_Store
+target/
