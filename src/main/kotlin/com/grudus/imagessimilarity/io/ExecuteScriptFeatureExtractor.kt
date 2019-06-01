@@ -9,15 +9,16 @@ class ExecuteScriptFeatureExtractor(
     private val workingDirectory: File,
     private val scriptName: String,
     private val processedImageDirectory: File,
-    private val secondsWait: Long = 10
+    private val secondsWait: Long = 20
 ) : FeatureExtractor {
 
 
     override fun extract(file: File): Try<File> {
         return executeScript(file)
+            .flatMap { getProcessedFile(file) }
     }
 
-    private fun executeScript(file: File): Try<File> =
+    private fun executeScript(file: File): Try<Void> =
         Try.of {
             ProcessBuilder("./$scriptName", file.name)
                 .directory(workingDirectory)
@@ -26,13 +27,16 @@ class ExecuteScriptFeatureExtractor(
                 .start()
         }.flatMap { process ->
             val success = process.waitFor(secondsWait, TimeUnit.SECONDS)
-            if (success && process.exitValue() == 0) Try.success(true)
+            if (success && process.exitValue() == 0) Try.success(null)
             else Try.failure(CannotExecuteExtractFeaturesScriptException("Return code: ${process.exitValue()}"))
-        }.flatMap {
-            val processedFile = File(processedImageDirectory, "${file.name}.haraff.sift")
-            if (processedFile.exists())
-                Try.success(processedFile)
-            else
-                Try.failure(FileNotFoundException("Cannot find file with extracted features in ${processedFile.absolutePath}"))
         }
+
+    private fun getProcessedFile(file: File): Try<File> {
+        val processedFile = File(processedImageDirectory, "${file.name}.haraff.sift")
+
+        return if (processedFile.exists())
+            Try.success(processedFile)
+        else
+            Try.failure(FileNotFoundException("Cannot find file with extracted features in ${processedFile.absolutePath}"))
+    }
 }
