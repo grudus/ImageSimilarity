@@ -3,6 +3,7 @@ out/
 *.iml
 
 src/main/resources/images-to-process/*.jpg
+src/main/resources/images-to-process/*.jpeg
 src/main/resources/images-to-process/*.png
 src/main/resources/images-to-process/*.ppm
 src/main/resources/processed-images/*.sift
