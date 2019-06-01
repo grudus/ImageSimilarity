@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
+import java.nio.file.Paths
 import javax.imageio.ImageIO
 
 class ImageReader(private val imagesToProcessDirectory: File) {
@@ -17,7 +18,9 @@ class ImageReader(private val imagesToProcessDirectory: File) {
             return Try.failure(WrongExtensionException("File $path must have on of $availableExtensions extension"))
         }
 
-        val file = File(imagesToProcessDirectory, path)
+        val file = if (Paths.get(path).isAbsolute)
+            File(path)
+        else File(imagesToProcessDirectory, path)
 
         if (!file.exists()) {
             return Try.failure(FileNotFoundException("Cannot find file ${file.absolutePath}"))

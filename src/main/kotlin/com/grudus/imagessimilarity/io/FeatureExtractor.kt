@@ -4,5 +4,5 @@ import io.vavr.control.Try
 import java.io.File
 
 interface FeatureExtractor {
-    fun extract(file: File): Try<Any>
+    fun extract(file: File): Try<File>
 }
