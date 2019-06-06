@@ -3,7 +3,7 @@ package com.grudus.imagessimilarity
 import com.grudus.imagessimilarity.commons.filenameWithoutExtension
 import com.grudus.imagessimilarity.features.ImageFeatures
 import com.grudus.imagessimilarity.features.ImageFeaturesReader
-import com.grudus.imagessimilarity.io.*
+import com.grudus.imagessimilarity.image.*
 import io.vavr.control.Try
 import java.io.File
 
@@ -39,6 +39,7 @@ class ImageFeatureExtractor(
             .flatMap { file -> featureExtractor.extract(file) }
             .onSuccess { file -> println("Features successfully extracted to file ${file.absolutePath}. Preparing to read features ...") }
             .flatMap { file -> imageFeaturesReader.read(file) }
+            .onSuccess { features -> println("${features.size} features successfully read") }
     }
 
 }

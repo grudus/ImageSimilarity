@@ -1,4 +1,4 @@
-package com.grudus.imagessimilarity.io
+package com.grudus.imagessimilarity.image
 
 import java.lang.RuntimeException
 

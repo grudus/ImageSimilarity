@@ -7,7 +7,7 @@ src/main/resources/images-to-process/*.jpeg
 src/main/resources/images-to-process/*.png
 src/main/resources/images-to-process/*.ppm
 src/main/resources/processed-images/*.sift
-src/main/resources/processed-images/*.sift.png
+src/main/resources/processed-images/*.png
 
 **/*.DS_Store
 target/
