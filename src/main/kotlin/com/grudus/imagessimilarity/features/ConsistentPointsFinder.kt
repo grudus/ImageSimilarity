@@ -26,7 +26,7 @@ class ConsistentPointsFinder(
 
                 neighbours1.forEach { neig1 ->
                     val common = points1ToPoints2[neig1]
-                    if (neighbours2.contains(common) && points2ToPoints1[common] == neig1)
+                    if (neighbours2.contains(common))
                         consistentPoints++
                 }
 
@@ -36,13 +36,10 @@ class ConsistentPointsFinder(
     }
 
     private fun findNeighbours(
-        point: Point,
+        searchedPoint: Point,
         allPoints: Set<Point>
     ): Set<Point> =
-        allPoints.sortedBy { euclideanDistance(it, point) }
+        allPoints.sortedBy { point -> point distanceTo searchedPoint }
             .take(numberOfNeighbours)
             .toSet()
-
-    private fun euclideanDistance(point1: Point, point2: Point): Double =
-        Math.pow(point1.y - point2.y, 2.0) + Math.pow(point1.x - point2.x, 2.0)
 }

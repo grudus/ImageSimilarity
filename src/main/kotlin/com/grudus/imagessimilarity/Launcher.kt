@@ -8,13 +8,13 @@ const val IMAGES_TO_PROCESS_DIRECTORY_PATH = "src/main/resources/images-to-proce
 const val PROCESSED_IMAGES_DIRECTORY_PATH = "src/main/resources/processed-images"
 const val EXTRACT_FEATURES_SCRIPT_DIRECTORY_PATH = "scripts"
 const val EXTRACT_FEATURES_SCRIPT_NAME = "extract_features.sh"
-const val CONSISTENT_POINT_NEIGHBOURS = 10
-const val COHESION_PERCENTAGE = 0.5
+const val CONSISTENT_POINT_NEIGHBOURS = 15
+const val COHESION_PERCENTAGE = 0.3
 
 fun main() {
     println("Hello in the image similarity program!")
-    val imageAFile = File(IMAGES_TO_PROCESS_DIRECTORY_PATH, "mroczek3.png")
-    val imageBFile = File(IMAGES_TO_PROCESS_DIRECTORY_PATH, "mroczek4.png")
+    val imageAFile = File(IMAGES_TO_PROCESS_DIRECTORY_PATH, "jednok.jpg")
+    val imageBFile = File(IMAGES_TO_PROCESS_DIRECTORY_PATH, "jednok2.jpg")
 
 
     val imageReader = ImageReader(File(IMAGES_TO_PROCESS_DIRECTORY_PATH))
