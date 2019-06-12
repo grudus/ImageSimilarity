@@ -7,3 +7,6 @@ fun singleColumnMatrix(vararg rows: Double): SimpleMatrix {
     val rowsArray: Array<DoubleArray> = rows.map { doubleArrayOf(it) }.toTypedArray()
     return SimpleMatrix(rowsArray)
 }
+
+
+fun SimpleMatrix.canBeInverted(): Boolean = !determinant().isAlmostZero()
