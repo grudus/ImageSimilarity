@@ -9,7 +9,7 @@ import java.io.File
 
 class ImageFeatureExtractor(
     imagesToProcessDirectoryPath: String,
-    processedImagesDirectoryPath: String,
+    private val processedImagesDirectoryPath: String,
     scriptDirectoryPath: String,
     scriptName: String
 ) {
@@ -26,9 +26,18 @@ class ImageFeatureExtractor(
         )
 
 
-    fun extract(imagePath: String): Try<List<ImageFeatures>> {
+    fun extract(imagePath: String, useExistingFeatures: Boolean = true): Try<List<ImageFeatures>> {
         println("Preparing to read file $imagePath ...")
         val filename = filenameWithoutExtension(imagePath)
+
+        if (useExistingFeatures) {
+            val existingFeatures = File(processedImagesDirectoryPath, "$filename.png.haraff.sift")
+            println("Trying to use existing features for file ${existingFeatures.absolutePath}")
+            if (existingFeatures.exists()) {
+                println("Existing features exists, program will use them")
+                return imageFeaturesReader.read(existingFeatures)
+            }
+        }
 
         return imageReader.read(imagePath)
             .onSuccess { println("Image $imagePath was successfully read. Preparing to remove alpha channels ...") }

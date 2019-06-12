@@ -24,6 +24,8 @@ open class ImageTransformRansac
         }
 
     override fun generateModel(samples: List<CommonPoints>): Transform? =
-        TransformFactory.createTransform(transformType, samples)
+        if (samples.size < transformType.numberOfPoints) null
+        else
+            TransformFactory.createTransform(transformType, samples)
 
 }

@@ -20,8 +20,8 @@ val RANSAC_TRANSFORM = TransformType.PERSPECTIVE
 
 fun main() {
     println("Hello in the image similarity program!")
-    val imageAFile = File(IMAGES_TO_PROCESS_DIRECTORY_PATH, "deser1.jpg")
-    val imageBFile = File(IMAGES_TO_PROCESS_DIRECTORY_PATH, "deser2.jpg")
+    val imageAFile = File(IMAGES_TO_PROCESS_DIRECTORY_PATH, "okulary1.jpg")
+    val imageBFile = File(IMAGES_TO_PROCESS_DIRECTORY_PATH, "okulary2.jpg")
 
 
     val imageReader = ImageReader(File(IMAGES_TO_PROCESS_DIRECTORY_PATH))
@@ -40,7 +40,7 @@ fun main() {
     val featuresA: List<ImageFeatures> = extractor.extract(imageAFile.name).get()
     val featuresB: List<ImageFeatures> = extractor.extract(imageBFile.name).get()
 
-    val commonPoints = commonPointsProcessor.findCommonPointsByCohesion(featuresA, featuresB)
+    val commonPoints = commonPointsProcessor.findCommonPointsByRansac(featuresA, featuresB)
 
     val mergedImages: MergedImages =
         imageMerger.merge(imageReader.read(imageAFile.name).get(), imageReader.read(imageBFile.name).get())

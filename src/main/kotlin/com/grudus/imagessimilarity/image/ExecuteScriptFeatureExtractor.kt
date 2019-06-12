@@ -9,7 +9,7 @@ class ExecuteScriptFeatureExtractor(
     private val workingDirectory: File,
     private val scriptName: String,
     private val processedImageDirectory: File,
-    private val secondsWait: Long = 20
+    private val secondsWait: Long = 60
 ) : FeatureExtractor {
 
 
