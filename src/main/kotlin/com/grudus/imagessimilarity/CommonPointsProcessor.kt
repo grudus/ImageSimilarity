@@ -1,6 +1,6 @@
 package com.grudus.imagessimilarity
 
-import com.grudus.imagessimilarity.ai.ImageTransformRansac
+import com.grudus.imagessimilarity.ai.PointsDistanceRansac
 import com.grudus.imagessimilarity.features.CommonFeaturesFinder
 import com.grudus.imagessimilarity.features.CommonPoints
 import com.grudus.imagessimilarity.features.ConsistentPointsFinder
@@ -10,7 +10,7 @@ import com.grudus.imagessimilarity.transform.Transform
 class CommonPointsProcessor {
     private val commonFeaturesFinder = CommonFeaturesFinder()
     private val consistentPointsFinder = ConsistentPointsFinder(CONSISTENT_POINT_NEIGHBOURS, COHESION_PERCENTAGE)
-    private val ransac = ImageTransformRansac(RANSAC_NUMBER_OF_ITERATIONS, RANSAC_MAXIMUM_VALID_ERROR, RANSAC_TRANSFORM)
+    private val ransac = PointsDistanceRansac(RANSAC_NUMBER_OF_ITERATIONS, RANSAC_MAXIMUM_VALID_ERROR, RANSAC_TRANSFORM, 5, 10000)
 
 
     fun findCommonPointsByCohesion(featuresA: List<ImageFeatures>, featuresB: List<ImageFeatures>): List<CommonPoints> {
