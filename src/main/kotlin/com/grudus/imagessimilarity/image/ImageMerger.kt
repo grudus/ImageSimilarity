@@ -3,7 +3,7 @@ package com.grudus.imagessimilarity.image
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
-class ImageMerger {
+object ImageMerger {
 
     fun merge(topImage: BufferedImage, bottomImage: BufferedImage): MergedImages {
         val width = Math.max(topImage.width, bottomImage.width)

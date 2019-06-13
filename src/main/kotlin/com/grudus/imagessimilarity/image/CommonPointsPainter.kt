@@ -4,7 +4,7 @@ import com.grudus.imagessimilarity.features.CommonPoints
 import java.awt.Color
 import kotlin.random.Random
 
-class CommonPointsPainter {
+object CommonPointsPainter {
 
 
 

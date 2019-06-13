@@ -1,5 +1,6 @@
 package com.grudus.imagessimilarity.image
 
+import com.grudus.imagessimilarity.Config
 import com.grudus.imagessimilarity.commons.WrongExtensionException
 import com.grudus.imagessimilarity.commons.fileExtension
 import io.vavr.control.Try
@@ -14,6 +15,11 @@ class ImageFileService(
     private val imagesToProcessDirectory: File,
     private val processedImagesDirectory: File
 ) {
+    constructor(config: Config) : this(
+        File(config.imagesToProcessDirectoryPath),
+        File(config.processedImagesDirectoryPath)
+    )
+
     private val availableExtensions = listOf("png", "jpg", "JPG", "jpeg")
 
     fun write(image: BufferedImage, filename: String): Try<File> {

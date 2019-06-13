@@ -10,21 +10,16 @@ import com.grudus.imagessimilarity.image.PngAlphaConverter
 import io.vavr.control.Try
 import java.io.File
 
-class ImageFeatureExtractor(
-    imagesToProcessDirectoryPath: String,
-    private val processedImagesDirectoryPath: String,
-    scriptDirectoryPath: String,
-    scriptName: String
-) {
+class ImageFeatureExtractor(private val config: Config) {
 
-    private val imageFileService = ImageFileService(File(imagesToProcessDirectoryPath), File(imagesToProcessDirectoryPath))
+    private val imageFileService = ImageFileService(File(config.imagesToProcessDirectoryPath), File(config.imagesToProcessDirectoryPath))
     private val pngAlphaConverter = PngAlphaConverter()
     private val imageFeaturesReader = ImageFeaturesReader()
     private val featureExtractor: FeatureExtractor =
         ExecuteScriptFeatureExtractor(
-            workingDirectory = File(scriptDirectoryPath),
-            scriptName = scriptName,
-            processedImageDirectory = File(processedImagesDirectoryPath)
+            workingDirectory = File(config.extractFeaturesScriptDirectoryPath),
+            scriptName = config.extractFeaturesScriptName,
+            processedImageDirectory = File(config.processedImagesDirectoryPath)
         )
 
 
@@ -32,7 +27,7 @@ class ImageFeatureExtractor(
         val filename = filenameWithoutExtension(imagePath)
 
         if (useExistingFeatures) {
-            val existingFeatures = File(processedImagesDirectoryPath, "$filename.png.haraff.sift")
+            val existingFeatures = File(config.processedImagesDirectoryPath, "$filename.png.haraff.sift")
             if (existingFeatures.exists()) {
                 return imageFeaturesReader.read(existingFeatures)
             }
