@@ -10,8 +10,19 @@ import java.io.FileNotFoundException
 import java.nio.file.Paths
 import javax.imageio.ImageIO
 
-class ImageReader(private val imagesToProcessDirectory: File) {
+class ImageFileService(
+    private val imagesToProcessDirectory: File,
+    private val processedImagesDirectory: File
+) {
     private val availableExtensions = listOf("png", "jpg", "JPG", "jpeg")
+
+    fun write(image: BufferedImage, filename: String): Try<File> {
+        val file = File(processedImagesDirectory, filename)
+
+        return Try.of { ImageIO.write(image, "png", file) }
+            .map { file }
+    }
+
 
     fun read(path: String): Try<BufferedImage> {
         if (!hasCorrectExtension(path)) {

@@ -3,7 +3,10 @@ package com.grudus.imagessimilarity
 import com.grudus.imagessimilarity.commons.filenameWithoutExtension
 import com.grudus.imagessimilarity.features.ImageFeatures
 import com.grudus.imagessimilarity.features.ImageFeaturesReader
-import com.grudus.imagessimilarity.image.*
+import com.grudus.imagessimilarity.image.ExecuteScriptFeatureExtractor
+import com.grudus.imagessimilarity.image.FeatureExtractor
+import com.grudus.imagessimilarity.image.ImageFileService
+import com.grudus.imagessimilarity.image.PngAlphaConverter
 import io.vavr.control.Try
 import java.io.File
 
@@ -14,8 +17,7 @@ class ImageFeatureExtractor(
     scriptName: String
 ) {
 
-    private val imageReader = ImageReader(File(imagesToProcessDirectoryPath))
-    private val imageWriter = ImageWriter(File(imagesToProcessDirectoryPath))
+    private val imageFileService = ImageFileService(File(imagesToProcessDirectoryPath), File(imagesToProcessDirectoryPath))
     private val pngAlphaConverter = PngAlphaConverter()
     private val imageFeaturesReader = ImageFeaturesReader()
     private val featureExtractor: FeatureExtractor =
@@ -27,28 +29,20 @@ class ImageFeatureExtractor(
 
 
     fun extract(imagePath: String, useExistingFeatures: Boolean = true): Try<List<ImageFeatures>> {
-        println("Preparing to read file $imagePath ...")
         val filename = filenameWithoutExtension(imagePath)
 
         if (useExistingFeatures) {
             val existingFeatures = File(processedImagesDirectoryPath, "$filename.png.haraff.sift")
-            println("Trying to use existing features for file ${existingFeatures.absolutePath}")
             if (existingFeatures.exists()) {
-                println("Existing features exists, program will use them")
                 return imageFeaturesReader.read(existingFeatures)
             }
         }
 
-        return imageReader.read(imagePath)
-            .onSuccess { println("Image $imagePath was successfully read. Preparing to remove alpha channels ...") }
+        return imageFileService.read(imagePath)
             .map { img -> pngAlphaConverter.removeAlpha(img) }
-            .onSuccess { println("Alpha channels were successfully removed. Preparing to save $filename as png without alpha ...") }
-            .flatMap { img -> imageWriter.write(img, "$filename.png") }
-            .onSuccess { println("File $filename.png successfully saved. Preparing to extract features from image ...") }
+            .flatMap { img -> imageFileService.write(img, "$filename.png") }
             .flatMap { file -> featureExtractor.extract(file) }
-            .onSuccess { file -> println("Features successfully extracted to file ${file.absolutePath}. Preparing to read features ...") }
             .flatMap { file -> imageFeaturesReader.read(file) }
-            .onSuccess { features -> println("${features.size} features successfully read") }
     }
 
 }

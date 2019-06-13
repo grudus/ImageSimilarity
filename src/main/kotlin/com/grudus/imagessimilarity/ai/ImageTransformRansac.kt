@@ -20,7 +20,7 @@ open class ImageTransformRansac
     override fun calculateScore(model: Transform, initialData: List<CommonPoints>): Int =
         initialData.count {
             val transformedPoint = model.transform(it.point1)
-            transformedPoint distanceTo it.point2 < maximumValidError
+            transformedPoint squaredDistanceTo it.point2 < maximumValidError
         }
 
     override fun generateModel(samples: List<CommonPoints>): Transform? =
